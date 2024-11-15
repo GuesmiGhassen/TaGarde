@@ -1,0 +1,87 @@
+<div class="bg-white">
+  <div class="flex align-items-center justify-content-between">
+    <h5 class="pt-4 pl-4 relative">Manage Doctors</h5>
+  </div>
+  <div
+    class="card mx-auto lg:gap-y-0 gap-x-8 gap-y-16 px-4 sm:px-6 sm:py-9 lg:px-8 bg-white"
+  >
+    <p-toast />
+
+    <p-toolbar styleClass="mb-4 gap-2 rounded-xl flex bg-white border-[1px]">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filterGlobal($any($event).target.value.doctorsDTO, 'contains')"
+          placeholder="Search..."
+        />
+      </span>
+    </p-toolbar>
+
+    <p-table
+      #dt
+      [value]="HospitalDepartments"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['name', 'address', 'phone', 'email']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+    >
+      <ng-template pTemplate="header" class="bg-white">
+        <tr class="border-y-[1px]">
+          <th
+            pSortableColumn=""
+            style="min-width: 12rem"
+            class="flex items-center hover:bg-[#F1F5F9]"
+          >
+            Name <p-sortIcon field="" />
+          </th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th
+            pSortableColumn="doctorsDTO.firstname"
+            style="min-width: 12rem"
+            class="items-center hover:bg-[#F1F5F9]"
+          >
+            Department <p-sortIcon field="departmentDTO.name" />
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-owner class="hover:bg-[#F1F5F9]">
+        <tr
+          class="hover:bg-[#F1F5F9] h-2 border-y-[1px]"
+          *ngIf="owner.doctorsDTO.length > 0"
+        >
+          <td>
+            <div *ngFor="let item of owner.doctorsDTO">
+              {{ item.firstName }} {{ item.lastName }}
+            </div>
+          </td>
+          <td>
+            <div *ngFor="let item of owner.doctorsDTO">
+              {{ item.address }}
+            </div>
+          </td>
+          <td>
+            <div *ngFor="let item of owner.doctorsDTO">
+              {{ item.phoneNumber }}
+            </div>
+          </td>
+          <td>
+            <div *ngFor="let item of owner.doctorsDTO">
+              {{ item.email }}
+            </div>
+          </td>
+          <td>
+            {{ owner.departmentDTO.name }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

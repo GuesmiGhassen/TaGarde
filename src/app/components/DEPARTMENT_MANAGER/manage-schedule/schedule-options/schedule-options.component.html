@@ -1,0 +1,42 @@
+<div class="bg-white">
+  <p-carousel
+    [value]="schedules"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="true"
+  >
+    <ng-template pTemplate="item" let-schedule>
+      <div class="flex flex-col items-center lg:py-4">
+        <div class="flex items-center justify-between lg:w-[800px]">
+          <div>
+            <p class="font-semibold text-lg">Schedule {{ schedule.id }}</p>
+          </div>
+          <div class="lg:flex hidden">
+            <button
+              pButton
+              type="button"
+              label="Select This Schedule"
+              class="p-mt-2"
+              (click)="onSelectSchedule(schedule)"
+            ></button>
+          </div>
+        </div>
+
+        <div class="lg:w-[800px] text-sm w-full">
+          <full-calendar
+            [options]="scheduleOptionsMap.get(schedule.id)"
+          ></full-calendar>
+        </div>
+        <div class="flex lg:hidden pt-5">
+          <button
+            pButton
+            type="button"
+            label="Select This Schedule"
+            class="p-mt-2"
+            (click)="onSelectSchedule(schedule)"
+          ></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>

@@ -1,0 +1,45 @@
+<div class="bg-white">
+  <div class="lg:flex lg:justify-between">
+    <!-- Left Side: Calendar -->
+    <div class="lg:w-[800px] text-sm w-full lg:ml-28">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+
+    <!-- Right Side: Filter -->
+    <div class="lg:w-[22%] w-[90%] bg-white ml-4 flex flex-col justify-end">
+      <div
+        class="flex justify-center items-center mx-4 border-8 rounded-lg border-black"
+      >
+        <button
+          pButton
+          severity="success"
+          icon="pi pi-refresh"
+          label="Regenerate Schedule"
+          (click)="RegenerateSchedule()"
+        ></button>
+      </div>
+      <div class="mx-4 p-4 border-8 rounded-lg border-black lg:h-[90%]">
+        <p class="text-xl font-bold mb-2">Doctors:</p>
+        <div class="list-none border-2 rounded-md bg-white p-2">
+          <div *ngFor="let doctorId of doctorIds">
+            <button
+              class="mb-1 w-full border-none bg-white p-3 font-semibold text-sm text-[#334155] hover:bg-[#F1F5F9] hover:text-[#1D4ED8] rounded-md cursor-pointer"
+              (click)="filterByDoctor(doctorId)"
+            >
+              Doctor ID: {{ doctorId }}
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-end text-sm">
+          <button
+            pButton
+            label="Clear Filter"
+            class="mt-4"
+            (click)="clearFilter()"
+            size="small"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

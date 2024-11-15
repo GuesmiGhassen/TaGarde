@@ -1,0 +1,269 @@
+<div class="bg-white">
+  <div class="flex align-items-center justify-content-between">
+    <h5 class="pt-4 pl-4 relative">Manage Hospital Owners</h5>
+  </div>
+
+  <div
+    class="card mx-auto lg:gap-y-0 gap-x-8 gap-y-16 px-4 sm:px-6 sm:py-9 lg:px-8 bg-white"
+  >
+    <p-toast />
+
+    <p-toolbar styleClass="mb-4 gap-2 rounded-xl flex bg-white border-[1px]">
+      <ng-template pTemplate="left">
+        <p-button
+          *ngIf="currentUserRole == 'ROLE_ADMIN'"
+          severity="success"
+          label="New"
+          icon="pi pi-plus"
+          class="mr-2"
+          (onClick)="openNewHospitalOwnerDialog()"
+        />
+        <p-button
+          *ngIf="currentUserRole == 'ROLE_ADMIN'"
+          severity="danger"
+          label="Disable"
+          icon="pi pi-lock"
+          (onClick)="disableSelectedHospitalOwners()"
+          [disabled]="!selectedHospitalOwners || !selectedHospitalOwners.length"
+        />
+      </ng-template>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filterGlobal($any($event).target.value, 'contains')"
+          placeholder="Search..."
+        />
+      </span>
+    </p-toolbar>
+
+    <p-table
+      #dt
+      [value]="HospitalOwners"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['name', 'address', 'phone', 'email']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [(selection)]="selectedHospitalOwners"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+    >
+      <ng-template pTemplate="header" class="bg-white">
+        <tr class="border-y-[1px]">
+          <th style="width: 4rem" *ngIf="currentUserRole == 'ROLE_ADMIN'">
+            <p-tableHeaderCheckbox />
+          </th>
+          <th
+            pSortableColumn="firstName"
+            style="min-width: 12rem"
+            class="flex items-center hover:bg-[#F1F5F9]"
+          >
+            Name <p-sortIcon field="firstName" />
+          </th>
+          <th style="min-width: 10rem">Address</th>
+          <th style="min-width: 4rem">Phone</th>
+          <th>Email</th>
+          <th *ngIf="currentUserRole == 'ROLE_ADMIN'">Hospital</th>
+          <th *ngIf="currentUserRole == 'ROLE_ADMIN'">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-owner class="hover:bg-[#F1F5F9]">
+        <tr class="hover:bg-[#F1F5F9] h-2 border-y-[1px]">
+          <td *ngIf="currentUserRole == 'ROLE_ADMIN'">
+            <p-tableCheckbox [value]="owner" *ngIf="owner.isEnabled" />
+          </td>
+          <td>{{ owner.firstName }} {{ owner.lastName }}</td>
+          <td>
+            {{ owner.address }}
+          </td>
+          <td>
+            {{ owner.phoneNumber }}
+          </td>
+          <td>
+            {{ owner.email }}
+          </td>
+          <td>
+            <ng-container *ngIf="owner.hospitalName; else notAssigned">
+              {{ owner.hospitalName }}
+            </ng-container>
+            <ng-template #notAssigned>
+              <span class="font-semibold">Not Assigned</span>
+            </ng-template>
+          </td>
+          <td *ngIf="currentUserRole == 'ROLE_ADMIN'">
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="success"
+              (onClick)="editHospitalOwner(owner)"
+            />
+            <!-- <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="disableHospitalOwner(owner)"
+            /> -->
+            <p-button
+              *ngIf="owner.isEnabled"
+              icon="pi pi-lock"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="disableHospitalOwner(owner)"
+            />
+            <p-button
+              *ngIf="!owner.isEnabled"
+              icon="pi pi-lock-open"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="enableHospitalOwner(owner)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- <p-dialog
+      [(visible)]="HospitalOwnerDialog"
+      [style]="{ width: '450px', height: '820px' }"
+      [header]="dialogHeader"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <div class="field mb-2">
+          <label for="name">First Name</label>
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="editingHospitalOwner.firstName"
+            class="border border-gray-300 rounded-md pl-2 py-1 flex-1"
+            required
+            autofocus
+          />
+          <small class="p-error" *ngIf="submitted && !editingHospitalOwner.firstName">
+            First Name is required.
+          </small>
+        </div>
+        <div class="field mb-2">
+          <label for="lastname">Last Name</label>
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="editingHospitalOwner.lastName"
+            class="border border-gray-300 rounded-md pl-2 py-1 flex-1"
+            required
+            autofocus
+          />
+          <small class="p-error" *ngIf="submitted && !editingHospitalOwner.lastName">
+            Last Name is required.
+          </small>
+        </div>
+        <div class="field mb-2">
+          <label for="phone">Phone Number</label>
+          <input
+            type="text"
+            class="border border-gray-300 rounded-md pl-2 py-1 flex-1"
+            pInputText
+            id="phone"
+            [(ngModel)]="editingHospitalOwner.phoneNumber"
+          />
+          <small class="p-error" *ngIf="submitted && !editingHospitalOwner.phoneNumber">
+            Phone is required.
+          </small>
+        </div>
+
+        <div class="field mb-2">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="border border-gray-300 rounded-md pl-2 py-1 flex-1"
+            pInputText
+            id="email"
+            [(ngModel)]="editingHospitalOwner.email"
+          />
+          <small class="p-error" *ngIf="submitted && !editingHospitalOwner.email">
+            Email is required.
+          </small>
+        </div>
+        <div class="field mb-2">
+          <label for="password">Password</label>
+          <div class="relative">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              class="border border-gray-300 rounded-md pl-2 py-1 flex-1"
+              pInputText
+              id="password"
+              [(ngModel)]="editingHospitalOwner.password"
+            />
+            <i
+              class="pi"
+              [ngClass]="passwordVisible ? 'pi-eye-slash' : 'pi-eye'"
+              (click)="togglePasswordVisibility()"
+              style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
+            ></i>
+            <small class="p-error" *ngIf="submitted && !editingHospitalOwner.password">
+              Password is required.
+            </small>
+          </div>
+        </div>
+        <div class="field">
+          <label for="Hospital">Hospital</label>
+          <div class="border border-gray-300 rounded-md flex-1">
+            <p-dropdown
+              [(ngModel)]="selectedHospitalID"
+              inputId="HospitalOwner"
+              [options]="hospitalOptions"
+              [filter]="true"
+              optionLabel="name"
+            >
+            </p-dropdown>
+          </div>
+        </div>       
+      </ng-template>
+      <ng-template pTemplate="footer" class="flex">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          [text]="true"
+          (onClick)="hideDialog()"
+        />
+        <p-button
+          label="Save"
+          icon="pi pi-check"
+          [text]="true"
+          (onClick)="saveHospitalOwner()"
+        />
+      </ng-template>
+    </p-dialog> -->
+    <app-admin-hospital-owner-form
+      [visible]="HospitalOwnerDialog"
+      [dialogHeader]="dialogHeader"
+      [hospitalOwner]="editingHospitalOwner"
+      [submitted]="submitted"
+      (hideDialog)="hideDialog()"
+      (saveHospitalOwner)="saveHospitalOwner($event)"
+    ></app-admin-hospital-owner-form>
+
+    <!-- Your existing table and other content here -->
+
+    <!-- <p-confirmDialog [style]="{ width: '450px' }" /> -->
+    <p-confirmDialog
+      header="Confirm"
+      icon="pi pi-exclamation-triangle"
+      acceptLabel="Yes"
+      rejectLabel="No"
+      [dismissableMask]="true"
+    >
+    </p-confirmDialog>
+  </div>
+</div>

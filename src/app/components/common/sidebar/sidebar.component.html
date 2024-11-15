@@ -1,0 +1,78 @@
+<mat-sidenav-container class="h-screen" autosize>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    [mode]="sidenavMode"
+    [(opened)]="isSidenavOpen"
+    (openedChange)="onSidenavToggle($event)"
+  >
+    <img
+      class="flex justify-center items-center pl-2 py-2 relative"
+      [src]="imageUrl"
+      alt="TaGarde Logo"
+      width="150px"
+    />
+    <p *ngFor="let item of menu">
+      <a
+        mat-button
+        [routerLink]="item.link"
+        class="NavItem relative"
+        [ngClass]="{ 'active-link': isActive(item.link) }"
+      >
+        <span class="absolute -mt-[1px]">
+          <img [src]="item.icon" alt="" width="23" />
+        </span>
+        <span class="nav-text">{{ item.text }}</span>
+      </a>
+    </p>
+  </mat-sidenav>
+  <mat-sidenav-content class="flex bg-[#F9F9F9]">
+    <mat-toolbar class="hornav">
+      <div class="flex items-center justify-center">
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <img
+          [ngClass]="{
+            'toolbar-logo': isSidenavOpen,
+            'toolbar-logo-visible': !isSidenavOpen
+          }"
+          [src]="imageUrl"
+          alt="TaGarde Logo"
+          width="150px"
+        />
+      </div>
+
+      <mat-menu #userMenu="matMenu" class="matMenu">
+        <button mat-menu-item (click)="getProfile()">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-user-edit text-xs"></i>
+            <div>Your Profile</div>
+          </div>
+        </button>
+        <button mat-menu-item (click)="onLogout()">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-sign-out text-xs"></i>
+            <div>Log Out</div>
+          </div>
+        </button>
+      </mat-menu>
+
+      <button
+        [matMenuTriggerFor]="userMenu"
+        class="border-[#FDFBFF] border hover:border-[#E0E0E0] p-2 rounded-xl"
+      >
+        <div class="flex items-center gap-2">
+          <div class="text-black"><i class="pi pi-user"></i></div>
+          <div class="lg:flex flex-col hidden">
+            <span class="relative text-lg font-medium text-black">
+              {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+            </span>
+          </div>
+        </div>
+      </button>
+    </mat-toolbar>
+    <app-spinner></app-spinner>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

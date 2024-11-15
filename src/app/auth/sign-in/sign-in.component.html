@@ -1,0 +1,90 @@
+<p-toast></p-toast>
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div class="grid lg:grid-cols-2 h-screen items-center justify-center">
+  <div class="flex flex-col justify-center items-center lg:-top-9 relative">
+    <div class="flex">
+      <img [src]="imageUrl" alt="Logo" class="lg:w-[500px] w-[300px]" />
+    </div>
+    <h1
+      class="text-[#0682FB] lg:mt-10 lg:mb-5 lg:text-5xl font-bold lg:block hidden"
+    >
+      A solution just for you
+    </h1>
+    <p class="flex lg:w-[500px] w-[400px] text-gray-400 lg:block">
+      Tagarde is your ultimate solution for efficient and effective doctor shift
+      scheduling. Our app aims to streamline the scheduling process, making it
+      easy to manage shifts, track availability, and ensure optimal staffing
+      levels.
+    </p>
+  </div>
+  <div class="">
+    <div class="border-2 p-10 rounded-lg sm:mx-auto sm:w-full sm:max-w-sm">
+      <div>
+        <h2 class="text-3xl font-bold leading-9 tracking-tight text-gray-900">
+          Sign in
+        </h2>
+      </div>
+
+      <div class="mt-10">
+        <form (submit)="onLogin()" class="space-y-6" action="#" method="POST">
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Email address</label
+            >
+            <div class="mt-2">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                [(ngModel)]="loginData.email"
+                autocomplete="email"
+                required
+                pInputText
+                class="lg:w-[90%] w-[85%]"/>
+                <!-- <small class="p-error" *ngIf="submitted && !loginData.email">
+                  Name is required.
+                </small> -->
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <label
+                for="password"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Password</label
+              >
+            </div>
+            <div class="mt-2">
+              <div class="card flex justify-content-center">
+                <p-password
+                  [(ngModel)]="loginData.password"
+                  class="lg:w-[100%]" 
+                  id="password"
+                  name="password"
+                  [toggleMask]="true"
+                  [feedback]="false"
+                />
+                <!-- <small class="p-error" *ngIf="submitted && !loginData.password">
+                  Name is required.
+              </small> -->
+              </div>
+            </div>
+          
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              class="flex lg:w-[90%] w-[85%] justify-center rounded-md bg-[#0682FB] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#07B0F2]"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div
+  class="mx-auto grid max-w-2xl grid-cols-1 lg:gap-y-0 gap-x-8 gap-y-16 px-4 sm:px-6 sm:py-9 lg:max-w-4xl lg:px-8"
+>
+  <div>
+    <div class="flex items-center">
+      <div class="text-[22px] font-bold">
+        Hello, Mr {{ currentUser?.firstName }}
+      </div>
+      <div class="text-4xl">👋</div>
+    </div>
+    <p class="pt-4 relative text-sm text-gray-500">
+      The walnut wood card tray is precision milled to perfectly fit a stack of
+      Focus cards.
+    </p>
+  </div>
+  <div class="flex justify-center">
+    <div
+      class="grid lg:min-h-[500px] lg:min-w-[600px] lg:grid-cols-2 lg:max-w-2xl grid-cols-1 grid-rows-2 gap-4 sm:gap-6 lg:gap-8 pt-10 relative"
+    >
+      <a
+        [routerLink]="item.link"
+        *ngFor="let item of Menu"
+        class="rounded-lg no-underline text-white flex justify-center lg:py-0 py-4 gap-4 flex-col items-center border hover:border-[#0682FB]"
+        [ngClass]="item.customStyle"
+      >
+        <div
+          class="inline-flex items-center justify-center w-20 h-20 rounded-full p-2"
+          [ngClass]="item.iconStyle"
+        >
+          <span class="text-5xl material-symbols-outlined">
+            {{item.icon}}
+          </span>
+        </div>
+        <div class="font-semibold text-base no-underline">
+          {{ item.text }}
+        </div>
+        <!-- <p class="px-4">{{ item.description }}</p> -->
+      </a>
+    </div>
+  </div>
+</div>

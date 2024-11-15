@@ -1,0 +1,41 @@
+<p-dialog
+  [(visible)]="visible"
+  [style]="{ width: '450px', height: '820px' }"
+  [header]="dialogHeader"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" (ngSubmit)="handleSave()">
+      <div class="field mb-2">
+        <label for="name">Department Name</label>
+        <input
+          type="text"
+          pInputText
+          id="name"
+          formControlName="name"
+          class="border border-gray-300 rounded-md pl-2 py-1 flex-1"
+          required
+          autofocus
+        />
+        <small class="p-error" *ngIf="submitted && form.controls['name'].errors">
+          Department Name is required.
+        </small>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template pTemplate="footer" class="flex">
+    <p-button
+      label="Cancel"
+      icon="pi pi-times"
+      [text]="true"
+      (click)="handleHide()"
+    />
+    <p-button
+      label="Save"
+      icon="pi pi-check"
+      [text]="true"
+      (click)="handleSave()"
+    />
+  </ng-template>
+</p-dialog>

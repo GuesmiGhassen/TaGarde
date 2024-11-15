@@ -1,0 +1,41 @@
+  .sidenav {
+    width: 250px;
+    border-radius: 0;
+    border-left: 2px;
+    border-color: rgb(224, 224, 224);
+  }
+  .hornav {
+    border-bottom: 1px solid rgb(224, 224, 224);
+    border-radius: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  .hornav button{
+    color: rgb(155, 155, 155);
+  }
+  .sidenav p {
+    margin-top: -12px;
+  }
+  .NavItem{
+    display: flex;
+    justify-content: start;
+    margin: 10px;
+    border-radius: 12px;
+    min-height: 48px;
+    width: 90%;
+  }
+  .nav-text{
+    margin-left: 35px;
+    color: rgb(160, 160, 160);
+    font-weight: 400;
+    font-size: 16px;;
+  }
+  .toolbar-logo {
+    display: none;
+  }
+  .toolbar-logo-visible {
+    display: block;
+  }
+.active-link {
+  background-color: #D7E2F5;
+}

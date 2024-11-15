@@ -1,0 +1,178 @@
+<div class="bg-white">
+  <div class="flex align-items-center justify-content-between">
+    <h5 class="pt-4 pl-4 relative">Manage Doctors</h5>
+  </div>
+  <div
+    class="card mx-auto lg:gap-y-0 gap-x-8 gap-y-16 px-4 sm:px-6 sm:py-9 lg:px-8 bg-white"
+  >
+    <p-toast />
+
+    <p-toolbar styleClass="mb-4 gap-2 rounded-xl flex bg-white border-[1px]">
+      <ng-template pTemplate="left">
+        <p-button
+          *ngIf="currentUserRole == 'ROLE_ADMIN'"
+          severity="success"
+          label="New"
+          icon="pi pi-plus"
+          class="mr-2"
+          (onClick)="openNewDoctorDialog()"
+        />
+        <p-button
+          *ngIf="currentUserRole == 'ROLE_ADMIN'"
+          severity="danger"
+          label="Disable"
+          icon="pi pi-lock"
+          (onClick)="disableSelectedDoctors()"
+          [disabled]="!selectedDoctors || !selectedDoctors.length"
+        />
+      </ng-template>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filterGlobal($any($event).target.value, 'contains')"
+          placeholder="Search..."
+        />
+      </span>
+    </p-toolbar>
+
+    <p-table
+      #dt
+      [value]="Doctors"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['name', 'address', 'phone', 'email']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [(selection)]="selectedDoctors"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+    >
+      <ng-template pTemplate="header" class="bg-white">
+        <tr class="border-y-[1px]">
+          <th style="width: 4rem" *ngIf="currentUserRole == 'ROLE_ADMIN'">
+            <p-tableHeaderCheckbox />
+          </th>
+          <th
+            pSortableColumn="firstName"
+            style="min-width: 12rem"
+            class="flex items-center hover:bg-[#F1F5F9]"
+          >
+            Name <p-sortIcon field="firstName" />
+          </th>
+          <th style="min-width: 10rem">Address</th>
+          <th style="min-width: 4rem">Phone</th>
+          <th>Email</th>
+          <th *ngIf="currentUserRole == 'ROLE_ADMIN'">Hospital</th>
+          <th *ngIf="currentUserRole == 'ROLE_ADMIN'">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-owner class="hover:bg-[#F1F5F9]" let-rowIndex="rowIndex" let-expanded="expanded">
+        <tr class="hover:bg-[#F1F5F9] h-2 border-y-[1px]">
+          <td *ngIf="currentUserRole == 'ROLE_ADMIN'">
+            <p-tableCheckbox [value]="owner" *ngIf="owner.isEnabled" />
+          </td>
+          <td class="flex items-center">
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="owner"
+              class="p-button-text p-button-rounded p-button-plain mr-2"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
+            <div>{{ owner.firstName }} {{ owner.lastName }}</div>
+          </td>
+          <td>
+            {{ owner.address }}
+          </td>
+          <td>
+            {{ owner.phoneNumber }}
+          </td>
+          <td>
+            {{ owner.email }}
+          </td>
+          <td>
+            {{ owner.hospitalName }}
+          </td>
+          <td *ngIf="currentUserRole == 'ROLE_ADMIN'">
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="success"
+              (onClick)="editDoctor(owner)"
+            />
+            <p-button
+              *ngIf="owner.isEnabled"
+              icon="pi pi-lock"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="disableDoctor(owner)"
+            />
+            <p-button
+              *ngIf="!owner.isEnabled"
+              icon="pi pi-lock-open"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="enableDoctor(owner)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-owner>
+        <tr>
+          <td></td>
+          <td>
+            <div><span class="font-semibold">Date Of Birth: </span></div>
+            <div>
+              {{ owner.dateOfBirth }}
+            </div>
+          </td>
+          <td>
+            <div><span class="font-semibold">Code CNOM: </span></div>
+            <div>
+              {{ owner.codeCNOM }}
+            </div>
+          </td>
+          <td>
+            <div><span class="font-semibold">Code CNAM: </span></div>
+            <div>
+              {{ owner.codeCNAM }}
+            </div>
+          </td>
+          <td *ngIf="owner.specialityDTO.length > 0">
+            <div><span class="font-semibold">Speciality: </span></div>
+            <div>
+              {{ owner.specialityDTO.id }}
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <app-admin-doctor-form
+      [visible]="DoctorDialog"
+      [dialogHeader]="dialogHeader"
+      [doctor]="editingDoctor"
+      [submitted]="submitted"
+      [Specialities]="Specialities"
+      (hideDialog)="hideDialog()"
+      (saveDoctor)="saveDoctor($event)"
+    ></app-admin-doctor-form>
+    <!-- <p-confirmDialog [style]="{ width: '450px' }" /> -->
+    <p-confirmDialog
+      header="Confirm"
+      icon="pi pi-exclamation-triangle"
+      acceptLabel="Yes"
+      rejectLabel="No"
+      [dismissableMask]="true"
+    >
+    </p-confirmDialog>
+  </div>
+</div>

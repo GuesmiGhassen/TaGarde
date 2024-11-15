@@ -1,0 +1,120 @@
+<p-toast></p-toast>
+<div class="profile-edit">
+  <form [formGroup]="profileForm" class="profile-form mt-4">
+    <div class="lg:flex lg:gap-4 lg:w-[88%]">
+      <div class="form-group w-[88%] lg:w-full">
+        <label for="firstName">First Name</label>
+        <input
+          id="firstName"
+          type="text"
+          pInputText
+          formControlName="firstName"
+          [disabled]="!isEditing"
+        />
+      </div>
+
+      <div class="form-group w-[88%] lg:w-full">
+        <label for="lastName">Last Name</label>
+        <input
+          id="lastName"
+          type="text"
+          pInputText
+          formControlName="lastName"
+          [disabled]="!isEditing"
+        />
+      </div>
+    </div>
+
+    <div class="form-group w-[88%]">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        pInputText
+        formControlName="email"
+        [disabled]="!isEditing"
+      />
+    </div>
+
+    <div class="form-group w-[88%]">
+      <label for="phone">Address</label>
+      <input
+        id="address"
+        type="text"
+        pInputText
+        formControlName="address"
+        [disabled]="!isEditing"
+      />
+    </div>
+    <div class="lg:flex lg:gap-4 lg:w-[88%]">
+      <div class="form-group w-[88%]">
+        <label for="phone">Phone</label>
+        <input
+          id="phone"
+          type="text"
+          pInputText
+          formControlName="phoneNumber"
+          [disabled]="!isEditing"
+        />
+      </div>
+
+      <div class="form-group w-[88%]">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input
+          id="dateOfBirth"
+          type="date"
+          pInputText
+          formControlName="dateOfBirth"
+          [disabled]="!isEditing"
+        />
+      </div>
+    </div>
+
+    <div class="lg:flex lg:gap-4 lg:w-[88%]">
+      <div class="form-group w-[88%] lg:w-full">
+        <label for="phone">Code CNAM</label>
+        <input
+          id="codeCNAM"
+          type="text"
+          pInputText
+          formControlName="codeCNAM"
+          [disabled]="!isEditing"
+        />
+      </div>
+      <div class="form-group w-[88%] lg:w-full">
+        <label for="phone">Code CNOM</label>
+        <input
+          id="codeCNOM"
+          type="text"
+          pInputText
+          formControlName="codeCNOM"
+          [disabled]="!isEditing"
+        />
+      </div>
+    </div>
+    <div class="button-group w-[88%]">
+      <button
+        pButton
+        type="button"
+        label="Edit"
+        (click)="toggleEdit()"
+        *ngIf="!isEditing"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Save"
+        (click)="saveProfile()"
+        *ngIf="isEditing"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="toggleEdit()"
+        *ngIf="isEditing"
+      ></button>
+    </div>
+  </form>
+</div>

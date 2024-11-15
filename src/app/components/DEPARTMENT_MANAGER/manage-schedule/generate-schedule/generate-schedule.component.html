@@ -1,0 +1,66 @@
+<div class="bg-white p-mb-4 h-[90%]">
+  <p class="p-4 flex items-center gap-1 text-xl"><i class="pi pi-cog text-xl"></i> Settings</p>
+  <form [formGroup]="scheduleForm" (ngSubmit)="onGenerate()" class="flex flex-col justify-center items-center">
+    <div class="p-grid p-dir-col flex flex-col gap-7">
+      <div class="p-field p-col-12 p-md-6 flex flex-col">
+        <label for="month" class=" font-medium">Select Month</label>
+        <p-dropdown
+          id="month"
+          formControlName="month"
+          [options]="months"
+          optionLabel="name"
+          placeholder="Select a Month"
+        ></p-dropdown>
+      </div>
+
+      <div class="p-field p-col-12 p-md-6 flex flex-col">
+        <label for="holidays" class=" font-medium">Select Holidays</label>
+        <p-calendar
+          id="holidays"
+          formControlName="holidays"
+          selectionMode="multiple"
+          class="w-[80%]"
+          dateFormat="yy-mm-dd"
+          placeholder="Select Holidays"
+        ></p-calendar>
+        <small *ngIf="holidayError" class="p-error">
+          Selected holidays do not match the selected month.
+        </small>
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <button
+          pButton
+          type="button"
+          severity="info"
+          label="Generate Schedule"
+          (click)="onGenerate()"
+          [disabled]="!scheduleForm.valid"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="schedules.length">
+  <p-listbox
+    [(ngModel)]="selectedSchedule"
+    [options]="schedules"
+    (onChange)="onSelectSchedule($event.value)"
+    optionLabel="scheduleName"
+  >
+    <ng-template let-schedule pTemplate="item">
+      <div class="p-d-flex p-ai-center">
+        <span>{{ schedule.scheduleName }}</span>
+      </div>
+    </ng-template>
+  </p-listbox>
+</div>
+
+<div>
+  <p-card>
+    <div *ngIf="calendarOptions" class="my-ng-fullcalendar">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </p-card>
+</div>

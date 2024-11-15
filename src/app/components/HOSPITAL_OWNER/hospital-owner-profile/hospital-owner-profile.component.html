@@ -1,0 +1,86 @@
+<div class="profile-edit">
+    <h2>Profile Information</h2>
+    <form [formGroup]="profileForm" class="profile-form">
+      <div class="flex gap-4">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            [disabled]="!isEditing"
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            [disabled]="!isEditing"
+          />
+        </div>
+      </div>
+  
+      <div class="form-group w-[88%]">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          pInputText
+          formControlName="email"
+          [disabled]="!isEditing"
+        />
+      </div>
+  
+      <div class="form-group w-[88%]">
+        <label for="phone">Phone</label>
+        <input
+          id="phone"
+          type="text"
+          pInputText
+          formControlName="phoneNumber"
+          [disabled]="!isEditing"
+        />
+      </div>
+      <div class="form-group w-[88%]">
+        <label for="phone">Address</label>
+        <input
+          id="address"
+          type="text"
+          pInputText
+          formControlName="address"
+          [disabled]="!isEditing"
+        />
+      </div>
+  
+      <div class="button-group">
+        <button
+          pButton
+          type="button"
+          label="Edit"
+          (click)="toggleEdit()"
+          *ngIf="!isEditing"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Save"
+          (click)="saveProfile()"
+          *ngIf="isEditing"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          class="p-button-secondary"
+          (click)="toggleEdit()"
+          *ngIf="isEditing"
+        ></button>
+      </div>
+    </form>
+  </div>
+  
